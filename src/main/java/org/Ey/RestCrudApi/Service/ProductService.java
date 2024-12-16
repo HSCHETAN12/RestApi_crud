@@ -37,16 +37,63 @@ public class ProductService {
 	public ResponseEntity<Object> fetch() {
 		List<Product> list=repository.findAll();
 		Map<String, Object> map=new HashMap<String, Object>();
-		map.put("data", list);
-		return new ResponseEntity<Object>(map,HttpStatus.FOUND);
+		if(list.isEmpty())
+		{
+			map.put("message","Products Not found");
+			return new ResponseEntity<Object>(map,HttpStatus.NOT_FOUND);
+		}
+		else {
+			map.put("message","Products Found");
+			map.put("data", list);
+			return new ResponseEntity<Object>(map,HttpStatus.OK);
+		}
+		
 	}
 
 	public ResponseEntity<Object> fetchId(int id) {
 		Optional<Product> product=repository.findById(id);
 		Map<String, Object> map=new HashMap<String, Object>();
-		map.put("data", product);
-		return new ResponseEntity<Object>(map,HttpStatus.ACCEPTED);
+		if(product.isEmpty())
+		{
+			map.put("message","Products Not found");
+			return new ResponseEntity<Object>(map,HttpStatus.NOT_FOUND);
+		}
+		else {
+			map.put("message","Products Found with id:"+id);
+			map.put("data", product);
+			return new ResponseEntity<Object>(map,HttpStatus.OK);
+		}
 		
+	}
+
+	public ResponseEntity<Object> fetchByName(String name) {
+		List<Product> product=repository.findByName(name);
+		Map<String, Object> map=new HashMap<String, Object>();
+		if(product.isEmpty())
+		{
+			map.put("message","Products Not found with name:"+name);
+			return new ResponseEntity<Object>(map,HttpStatus.NOT_FOUND);
+		}
+		else {
+			map.put("message","Products Found with name:"+name);
+			map.put("data", product);
+			return new ResponseEntity<Object>(map,HttpStatus.OK);
+		}
+	}
+
+	public ResponseEntity<Object> fetchByPriceBetween(int min, int max) {
+		List<Product> product=repository.findByStackBetween(min,max);
+		Map<String, Object> map=new HashMap<String, Object>();
+		if(product.isEmpty())
+		{
+			map.put("message","Products Not found Between:"+min+"and"+max);
+			return new ResponseEntity<Object>(map,HttpStatus.NOT_FOUND);
+		}
+		else {
+			map.put("message","Products Found :");
+			map.put("data", product);
+			return new ResponseEntity<Object>(map,HttpStatus.OK);
+		}
 	}
 
 }

@@ -7,6 +7,7 @@ import org.Ey.RestCrudApi.dto.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,10 +36,22 @@ public class Controller {
 	{
 		return service.fetch();
 	}
-	@GetMapping("/products/id")
-	public ResponseEntity<Object> fetchId(int id)
+	@GetMapping("/products/{id}")
+	public ResponseEntity<Object> fetchID(@PathVariable int id)
 	{
 		return service.fetchId(id);
+	}
+	
+	@GetMapping("/products/name/{name}")
+	public ResponseEntity<Object> fetchByname(@PathVariable String name)
+	{
+		return service.fetchByName(name);
+	}
+	
+	@GetMapping("/products/name/{min}/{max}")
+	public ResponseEntity<Object> fetchByname(@PathVariable int min,@PathVariable int max)
+	{
+		return service.fetchByPriceBetween(min,max);
 	}
 	
 }
